@@ -12,6 +12,12 @@ class Ant extends Model
      * @var array
      */
     protected $fillable = [
-        'photo_url', 'latitude', 'longitude', 'user_id', 'created_at'
+        'photo_url', 'latitude', 'longitude', 'user_id', 'created_at','action'
     ];
+
+    public function users()
+    {
+        return $this->belongsTo('App\User');
+    }
+    
 }
