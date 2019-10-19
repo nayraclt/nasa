@@ -147,16 +147,15 @@ requirejs(
             "castshadow-white.png"
         ];
         // http://localhost:8081/image/MOP_CO_M_2017-02-01_rgb_1440x720.TIFF
-        var pinLibrary = "https://files.worldwind.arc.nasa.gov/artifactory/web/0.9.0/images/pushpins/", // location of the image files
+        var pinLibrary =
+                "https://files.worldwind.arc.nasa.gov/artifactory/web/0.9.0/images/pushpins/", // location of the image files
             placemark,
             placemarkAttributes = new WorldWind.PlacemarkAttributes(null),
             highlightAttributes,
-            placemarkLayer = new WorldWind.RenderableLayer("Green Ant"),
-            latitude = 47.684444,
-            longitude = -121.129722;
+            placemarkLayer = new WorldWind.RenderableLayer("Green Ant");
 
         // Set up the common placemark attributes.
-        placemarkAttributes.imageScale = 1;
+        placemarkAttributes.imageScale = 0.3;
         placemarkAttributes.imageOffset = new WorldWind.Offset(
             WorldWind.OFFSET_FRACTION,
             0.3,
@@ -175,66 +174,102 @@ requirejs(
         placemarkAttributes.leaderLineAttributes.outlineColor =
             WorldWind.Color.RED;
 
-        // For each placemark image, create a placemark with a label.
-        for (var i = 0, len = images.length; i < len; i++) {
-            // Create the placemark and its label.
-            placemark = new WorldWind.Placemark(
-                new WorldWind.Position(latitude, longitude + i, 1e2),
-                false,
-                null
-            );
-            placemark.label =
-                "Placemark " +
-                i.toString() +
-                "\n" +
-                "Lat " +
-                latitude.toPrecision(4).toString() +
-                "\n" +
-                "Lon " +
-                longitude.toPrecision(5).toString();
-            placemark.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
+        // http://localhost:8081/ants
 
-            // Create the placemark attributes for this placemark. Note that the attributes differ only by their
-            // image URL.
-            placemarkAttributes = new WorldWind.PlacemarkAttributes(
-                placemarkAttributes
-            );
-            placemarkAttributes.imageSource = pinLibrary + images[i];
-            placemark.attributes = placemarkAttributes;
+        $.get("http://localhost:8081/ants")
+            .done(function(data) {
+                data.ants.forEach(function criarPontos(element, index) {
+                    placemark = new WorldWind.Placemark(
+                        new WorldWind.Position(element.latitude, element.longitude, 1e2),
+                        false,
+                        null
+                    );
+                    placemark.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
+                    placemarkAttributes = new WorldWind.PlacemarkAttributes(placemarkAttributes);
+                    placemarkAttributes.imageSource = pinLibrary + 'plain-green.png';
+                    placemark.attributes = placemarkAttributes;
+                    highlightAttributes = new WorldWind.PlacemarkAttributes(
+                        placemarkAttributes
+                    );
 
-            // Create the highlight attributes for this placemark. Note that the normal attributes are specified as
-            // the default highlight attributes so that all properties are identical except the image scale. You could
-            // instead vary the color, image, or other property to control the highlight representation.
-            highlightAttributes = new WorldWind.PlacemarkAttributes(
-                placemarkAttributes
-            );
-            highlightAttributes.imageScale = 1.2;
-            placemark.highlightAttributes = highlightAttributes;
+                    highlightAttributes.imageScale = 0.5;
+                    placemark.highlightAttributes = highlightAttributes;
 
-            // Add the placemark to the layer.
-            placemarkLayer.addRenderable(placemark);
-        }
+                    // Add the placemark to the layer.
+                    placemarkLayer.addRenderable(placemark);
+
+                });
+                wwd.addLayer(placemarkLayer);
+            })
+            .fail(function(error){
+                console.log(error);
+            });
+
+
+
+        // // For each placemark image, create a placemark with a label.
+        // for (var i = 0, len = images.length; i < len; i++) {
+        //     // Create the placemark and its label.
+        //     placemark = new WorldWind.Placemark(
+        //         new WorldWind.Position(latitude, longitude + i, 1e2),
+        //         false,
+        //         null
+        //     );
+        //     placemark.label =
+        //         "Placemark " +
+        //         i.toString() +
+        //         "\n" +
+        //         "Lat " +
+        //         latitude.toPrecision(4).toString() +
+        //         "\n" +
+        //         "Lon " +
+        //         longitude.toPrecision(5).toString();
+
+        //     placemark.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
+
+        //     // Create the placemark attributes for this placemark. Note that the attributes differ only by their
+        //     // image URL.
+        //     placemarkAttributes = new WorldWind.PlacemarkAttributes(
+        //         placemarkAttributes
+        //     );
+        //     placemarkAttributes.imageSource = pinLibrary + images[i];
+        //     placemark.attributes = placemarkAttributes;
+
+        //     // Create the highlight attributes for this placemark. Note that the normal attributes are specified as
+        //     // the default highlight attributes so that all properties are identical except the image scale. You could
+        //     // instead vary the color, image, or other property to control the highlight representation.
+        //     highlightAttributes = new WorldWind.PlacemarkAttributes(
+        //         placemarkAttributes
+        //     );
+        //     highlightAttributes.imageScale = 1.2;
+        //     placemark.highlightAttributes = highlightAttributes;
+
+        //     // Add the placemark to the layer.
+        //     placemarkLayer.addRenderable(placemark);
+        // }
 
         // Add the placemarks layer to the WorldWindow's layer list.
-        wwd.addLayer(placemarkLayer);
 
         // https://neo.sci.gsfc.nasa.gov/wms/wms?version=1.3.0&service=WMS&request=GetCapabilities
 
-        var serviceAddress = "https://neo.sci.gsfc.nasa.gov/wms/wms?version=1.3.0&service=WMS&request=GetCapabilities";
+        var serviceAddress =
+            "https://neo.sci.gsfc.nasa.gov/wms/wms?version=1.3.0&service=WMS&request=GetCapabilities";
         var layerName = "MOP_CO_M";
         // var layerName = "MOD_NDVI_M" densidad ede arvores;
 
         // Called asynchronously to parse and create the WMS layer
-        var createLayer = function (xmlDom) {
+        var createLayer = function(xmlDom) {
             // Create a WmsCapabilities object from the XML DOM
             var wms = new WorldWind.WmsCapabilities(xmlDom);
             // Retrieve a WmsLayerCapabilities object by the desired layer name
             var wmsLayerCapabilities = wms.getNamedLayer(layerName);
-            console.log('---------------------------')
+            console.log("---------------------------");
             console.log(wmsLayerCapabilities);
-            console.log('---------------------------')
+            console.log("---------------------------");
             // Form a configuration object from the WmsLayerCapability object
-            var wmsConfig = WorldWind.WmsLayer.formLayerConfiguration(wmsLayerCapabilities);
+            var wmsConfig = WorldWind.WmsLayer.formLayerConfiguration(
+                wmsLayerCapabilities
+            );
             // Modify the configuration objects title property to a more user friendly title
             wmsConfig.title = "Média de carbono emitido";
             // Create the WMS Layer from the configuration object
@@ -247,19 +282,20 @@ requirejs(
         };
 
         // Called if an error occurs during WMS Capabilities document retrieval
-        var logError = function (jqXhr, text, exception) {
-            console.log("There was a failure retrieving the capabilities document: " + text + " exception: " + exception);
+        var logError = function(jqXhr, text, exception) {
+            console.log(
+                "There was a failure retrieving the capabilities document: " +
+                    text +
+                    " exception: " +
+                    exception
+            );
         };
 
-        $.get(serviceAddress).done(createLayer).fail(logError);
-
-
-
+        $.get(serviceAddress)
+            .done(createLayer)
+            .fail(logError);
 
         var layerManager = new LayerManager(wwd);
-
-
-
 
         // Create a layer manager for controlling layer visibility.
     }

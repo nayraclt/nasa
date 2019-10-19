@@ -5,9 +5,9 @@ services:
       environment:
         - POSTGRES_USER=postgres
         - POSTGRES_DB=postgres
-        - POSTGRES_DB=adminlte
+        - POSTGRES_DB=nasa
       ports:
-        - "5433:5432"
+        - "5432:5432"
       volumes:
         - pgdata:/var/lib/postgresql/data
   web:
