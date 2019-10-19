@@ -20,3 +20,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/ants', 'AntController@index')->name('ants');
+
+Route::get('/ants/year/{year}', 'AntController@filterYear')->name('ants');

@@ -27,6 +27,12 @@ class AntController extends Controller
         return compact('ants');
     }
 
+    public function filterYear($year){
+
+        $antsPerYear = $this->ant->whereYear('created_at',$year)->get();
+        
+        return compact('antsPerYear');
+    }
     /**
      * Show the form for creating a new resource.
      *
