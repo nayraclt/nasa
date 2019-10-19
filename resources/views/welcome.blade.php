@@ -6,32 +6,26 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body>
+<body  style="background:#000000;color:#ffffff">
 <div class="container">
-    <div class="jumbotron hidden-xs">
-        <h1 style="text-align:center">WorldWind Deep Picking</h1>
-    </div>
     <div class="row">
         <div class="col-sm-3">
-            <h4>Projection</h4>
-            <div class="dropdown" id="projectionDropdown">
-            </div>
-            <br>
-            <h4>Layers</h4>
+            <h3>Ações positivas: <span id="counter"></span></h3>
+            <h3>Senso <span id="ano"></span></h3>
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-primary ano" >2017</button>
+                <button type="button" class="btn btn-primary ano" >2018</button>
+                <button type="button" class="btn btn-primary ano" >2019</button>
+              </div>
+            {{-- <div class="dropdown" id="projectionDropdown">
+            </div> --}}
+            {{-- <br> --}}
+            {{-- <h4>Layers</h4>
             <div class="list-group" id="layerList">
             </div>
-            <br>
-            <h4>Destination</h4>
-            <div class="input-group" id="searchBox">
-                <input type="text" class="form-control" placeholder="GoTo" id="searchText"/>
-                <span class="input-group-btn">
-                    <button id="searchButton" class="btn btn-primary" type="button">
-                        <span class="glyphicon glyphicon-search"></span>
-                    </button>
-                </span>
-            </div>
+            <br> --}}
         </div>
-        <div class="col-sm-9" id="globe">
+        <div class="col-sm-9" id="globe" style="padding:0;margin:0;">
             <canvas id="canvasOne" width="1000" height="1000"
                     style="width: 100%; height: auto; background-color: black;">
                 Your browser does not support HTML5 Canvas.

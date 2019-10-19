@@ -27,6 +27,11 @@ requirejs(
 
         // Tell WorldWind to log only warnings and errors.
         WorldWind.Logger.setLoggingLevel(WorldWind.Logger.LEVEL_WARNING);
+        $('#ano').html(2019);
+        $('.ano').on('click',function(){
+            var ano  = $(this).html();
+            $('#ano').html(ano);
+        });
 
         // Create the WorldWindow.
         var wwd = new WorldWind.WorldWindow("canvasOne");
@@ -148,14 +153,14 @@ requirejs(
         ];
         // http://localhost:8081/image/MOP_CO_M_2017-02-01_rgb_1440x720.TIFF
         var pinLibrary =
-                "https://files.worldwind.arc.nasa.gov/artifactory/web/0.9.0/images/pushpins/", // location of the image files
+                "http://localhost:8081/img/formiga.png", // location of the image files
             placemark,
             placemarkAttributes = new WorldWind.PlacemarkAttributes(null),
             highlightAttributes,
             placemarkLayer = new WorldWind.RenderableLayer("Green Ant");
 
         // Set up the common placemark attributes.
-        placemarkAttributes.imageScale = 0.3;
+        placemarkAttributes.imageScale = 0.1;
         placemarkAttributes.imageOffset = new WorldWind.Offset(
             WorldWind.OFFSET_FRACTION,
             0.3,
@@ -178,21 +183,22 @@ requirejs(
 
         $.get("http://localhost:8081/ants")
             .done(function(data) {
+                $('#counter').html(data.ants.length);
                 data.ants.forEach(function criarPontos(element, index) {
                     placemark = new WorldWind.Placemark(
                         new WorldWind.Position(element.latitude, element.longitude, 1e2),
                         false,
                         null
                     );
-                    placemark.altitudeMode = WorldWind.RELATIVE_TO_GROUND;
+                    placemark.altitudeMode = WorldWind.ABSLOUTE;
                     placemarkAttributes = new WorldWind.PlacemarkAttributes(placemarkAttributes);
-                    placemarkAttributes.imageSource = pinLibrary + 'plain-green.png';
+                    placemarkAttributes.imageSource = pinLibrary;
                     placemark.attributes = placemarkAttributes;
                     highlightAttributes = new WorldWind.PlacemarkAttributes(
                         placemarkAttributes
                     );
 
-                    highlightAttributes.imageScale = 0.5;
+                    highlightAttributes.imageScale = 0.15;
                     placemark.highlightAttributes = highlightAttributes;
 
                     // Add the placemark to the layer.
