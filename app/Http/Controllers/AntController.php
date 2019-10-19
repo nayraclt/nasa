@@ -2,19 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ant;
+use App\Ant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AntController extends Controller
 {
+
+    public function __construct(Ant $ant)
+    {
+        $this->ant = $ant;        
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        //
+    {        
+        $ants = DB::table('ants')->select('ants.photo_url', 'ants.latitude', 'ants.longitude', 'ants.user_id','users.name as name', 'ants.created_at','ants.action')                                                    
+                                                    ->leftjoin('users', 'ants.user_id', 'users.id')
+                                                    ->get();
+
+        return compact('ants');
     }
 
     /**

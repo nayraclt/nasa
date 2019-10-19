@@ -20,6 +20,7 @@ class CreateAntsTable extends Migration
             $table->double('longitude')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('action')->nullable();
             $table->timestamps();
         });
     }
