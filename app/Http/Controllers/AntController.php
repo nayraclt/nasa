@@ -20,7 +20,7 @@ class AntController extends Controller
      */
     public function index()
     {        
-        $ants = DB::table('ants')->select('ants.photo_url', 'ants.latitude', 'ants.longitude', 'ants.user_id','users.name as name', 'ants.created_at','ants.action')                                                    
+        $ants = DB::table('ants')->select('ants.photo_url','ants.id' ,'ants.latitude', 'ants.longitude', 'ants.user_id','users.name as name', 'ants.created_at','ants.action')                                                    
                                                     ->leftjoin('users', 'ants.user_id', 'users.id')
                                                     ->get();
 
@@ -28,7 +28,6 @@ class AntController extends Controller
     }
 
     public function filterYear($year){
-
         $antsPerYear = $this->ant->whereYear('created_at',$year)->get();
         
         return compact('antsPerYear');
