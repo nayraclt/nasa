@@ -27,7 +27,9 @@ requirejs(
 
         // Tell WorldWind to log only warnings and errors.
         WorldWind.Logger.setLoggingLevel(WorldWind.Logger.LEVEL_WARNING);
+
         $('#ano').html(2019);
+        
         $('.ano').on('click',function(){
             var ano  = $(this).html();
             $('#ano').html(ano);
@@ -153,7 +155,7 @@ requirejs(
         ];
         // http://localhost:8081/image/MOP_CO_M_2017-02-01_rgb_1440x720.TIFF
         var pinLibrary =
-                "http://localhost:8081/img/formiga.png", // location of the image files
+                "/img/formiga.png", // location of the image files
             placemark,
             placemarkAttributes = new WorldWind.PlacemarkAttributes(null),
             highlightAttributes,
@@ -181,7 +183,7 @@ requirejs(
 
         // http://localhost:8081/ants
 
-        $.get("http://localhost:8081/ants")
+        $.get("/ants")
             .done(function(data) {
                 $('#counter').html(data.ants.length);
                 data.ants.forEach(function criarPontos(element, index) {
