@@ -1,4 +1,6 @@
-# FORMIGUINHA VERDE // HACKATHON NASA 2019
+# FORMIGUINHA VERDE (GREEN ANT) // HACKATHON NASA 2019 (https://2019.spaceappschallenge.or)
+
+<p align="center"><img src="https://raw.githubusercontent.com/nayraclt/nasa/master/public/img/screnshot.pnp.png"></p>
 
 Algumas pastas estão ignoradas pelo .gitignore.
 
