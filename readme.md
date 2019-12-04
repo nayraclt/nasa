@@ -29,5 +29,19 @@ composer install --no-scripts
 <br>
 <code>php artisan key:generate</code>
 
-Em seguida você deve configurar o arquivo .env e rodar as migrations com:
+Alterar as configurações do seu .env para
+
+```
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=homestead
+DB_USERNAME=homestead
+DB_PASSWORD=secret
+
+```
+
+Em rodar as migrations com:
+
 <code> php artisan migrate --seed </code>
